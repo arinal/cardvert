@@ -2,8 +2,8 @@ package com.scout24.cardvert.core.advert
 
 import com.scout24.common.core.{Entity, InputError}
 import org.joda.time.DateTime
-
 import scala.util.{Success, Try}
+import scala.language.postfixOps
 
 trait Fuel
 case object Gasoline extends Fuel
@@ -33,6 +33,7 @@ case class UsedCarAdvert(id: Int,
 }
 
 object Advert {
+
   import com.scout24.common.core.ErrorToken._
 
   def validate(advert: Advert): Try[Advert] = {

@@ -3,7 +3,7 @@ package com.scout24.cardvert.app
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{ExceptionHandler, Route}
+import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import com.scout24.cardvert.core.advert.{ NewCarAdvert, UsedCarAdvert }
 import com.scout24.common.utils.CirceCodec
@@ -30,28 +30,14 @@ class AdvertRoute(service: AdvertService)
               adv   <- maybe.toFuture(ErrorToken(s"Advert with id $id not found", NotFoundError))
             } yield CarAdvert.fromAdvert(adv)
           }
+        } ~ {
+          complete {
+            for (all <- service.getAll)
+            yield all.map(CarAdvert.fromAdvert)
+          }
         }
       }
     }
   }
 }
 
-trait AdvertErrorHandler {
-
-  import com.scout24.common.core._
-
-  lazy val errorHandler = ExceptionHandler {
-    case token@ ErrorToken(message, errorType) =>
-      extractUri { uri =>
-        val status = deductStatus(token)
-        println(s"Request to $uri could not be handled normally.\nError: $message")
-        complete(HttpResponse(status, entity = message))
-      }
-  }
-
-  private def deductStatus(token: ErrorToken) = token.errorType match {
-    case NotFoundError => StatusCodes.NotFound
-    case InputError    => StatusCodes.BadRequest
-    case ProcessError | UnknownError => StatusCodes.InternalServerError
-  }
-}
