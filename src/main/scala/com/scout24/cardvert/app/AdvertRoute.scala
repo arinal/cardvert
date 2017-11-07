@@ -6,24 +6,29 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import com.scout24.cardvert.core.advert.{ NewCarAdvert, UsedCarAdvert }
+import com.scout24.common.utils.CirceCodec
 import scala.concurrent.ExecutionContext
 import com.scout24.cardvert.core.advert.AdvertService
 
 class AdvertRoute(service: AdvertService)
                  (implicit system: ActorSystem, _mat: Materializer, _ec: ExecutionContext)
-    extends AdvertErrorHandler {
+    extends AdvertErrorHandler
+    with CirceCodec {
 
-  import com.scout24.common.infra.akkahttp.CirceCodec._
   import io.circe.generic.auto._
+  import com.scout24.common.infra.akkahttp.CirceCodec._
+  import com.scout24.common.core._
+  import com.scout24.common.utils.Syntax._
 
   lazy val route: Route = pathPrefix("advert") {
     handleExceptions(errorHandler) {
       get {
         (parameter('id.as[Int])) { id =>
           complete {
-            // service.getById(id).map(maybe => maybe.map(CarAdvert.fromAdvert))
-            // CarAdvert(5, "", null, 0, true, None, None)
-            5
+            for {
+              maybe <- service.getById(id)
+              adv   <- maybe.toFuture(ErrorToken(s"Advert with id $id not found", NotFoundError))
+            } yield CarAdvert.fromAdvert(adv)
           }
         }
       }
