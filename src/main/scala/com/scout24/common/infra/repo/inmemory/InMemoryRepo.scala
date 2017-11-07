@@ -14,9 +14,6 @@ class InMemoryRepo[E <: Entity[Id], Id] extends Repository[E, Id] {
 
   override def byId(id: Id): Future[Option[E]] = Future.successful(entityMap.get(id))
   override def delete(id: Id): Future[Unit]    = Future.successful(entityMap -= id)
+  override def insert(entity: E): Future[Unit] = Future.successful(entityMap += entity.id -> entity)
   override def update(entity: E): Future[Unit] = insert(entity)
-  override def insert(entity: E): Future[Unit] = {
-    entityMap += entity.id -> entity
-    Future.successful(entity)
-  }
 }

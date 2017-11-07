@@ -9,5 +9,5 @@ trait Repository[E <: Entity[_], Id] {
 
   def insert(entity: E): Future[Unit]
   def update(entity: E): Future[Unit]
-  def delete(id: Id):    Future[Unit]
+  def delete(id: Id)   : Future[Unit]
 }

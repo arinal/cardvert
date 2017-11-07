@@ -7,7 +7,16 @@ lazy val root = (project in file(".")).
     )),
     name := "cardvert",
     libraryDependencies ++= Seq(
-      "joda-time"     %  "joda-time" % "2.9.1",
-      "org.scalatest" %% "scalatest" % "3.0.3" % Test
+      "com.softwaremill.macwire" %% "macros"    % "2.3.0",
+
+      "joda-time"          %  "joda-time"       % "2.9.1",
+      "io.circe"           %% "circe-core"      % "0.8.0",
+      "io.circe"           %% "circe-generic"   % "0.8.0",
+      "io.circe"           %% "circe-parser"    % "0.8.0",
+      "ch.qos.logback"     %  "logback-classic" % "1.1.2",
+
+      "com.typesafe.akka"  %% "akka-http"       % "10.0.10",
+
+      "org.scalatest"      %% "scalatest"       % "3.0.3" % Test
     )
   )
