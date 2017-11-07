@@ -27,7 +27,7 @@ class AdvertRoute(service: AdvertService)
           complete {
             for {
               maybe <- service.getById(id)
-              adv   <- maybe.toFuture(ErrorToken(s"Advert with id $id not found", NotFoundError))
+              adv   <- maybe.toFuture(ifFail = notFoundError(id))
             } yield CarAdvert.fromAdvert(adv)
           }
         } ~ {
@@ -39,5 +39,8 @@ class AdvertRoute(service: AdvertService)
       }
     }
   }
+
+  def notFoundError(id: Int)
+    = ErrorToken(s"Advert with id $id not found", NotFoundError)
 }
 

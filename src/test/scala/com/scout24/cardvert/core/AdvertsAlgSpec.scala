@@ -1,10 +1,12 @@
 package com.scout24.cardvert.core
 
+import com.scout24.cardvert.InitRepo
 import com.scout24.cardvert.core.advert.AdvertService
 import org.scalatest.{AsyncFlatSpec, Matchers}
 
 class AdvertsAlgSpec extends AsyncFlatSpec
-  with Matchers with InitRepo {
+    with Matchers
+    with InitRepo {
 
   val service = new AdvertService(advertRepo)
 

@@ -1,4 +1,4 @@
-package com.scout24.cardvert.core
+package com.scout24.cardvert
 
 import com.scout24.cardvert.core.advert._
 import com.scout24.cardvert.infra.repository.inmemory.AdvertInMemoryRepo
