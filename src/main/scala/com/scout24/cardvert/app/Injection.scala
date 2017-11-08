@@ -14,7 +14,7 @@ trait Injection {
   implicit val _mat   = ActorMaterializer()
 
   lazy val advertRepo: AdvertInMemoryRepo = wire[AdvertInMemoryRepo]
-  lazy val service: AdvertService         = wire[AdvertService]
+  lazy val service   : AdvertService      = wire[AdvertService]
 
   lazy val advertRoute: AdvertRoute       = wire[AdvertRoute]
   lazy val route                          = advertRoute.route

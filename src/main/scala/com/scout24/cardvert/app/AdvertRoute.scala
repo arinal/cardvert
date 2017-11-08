@@ -1,17 +1,13 @@
 package com.scout24.cardvert.app
 
-import akka.actor.ActorSystem
-import akka.stream.Materializer
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
-import com.scout24.cardvert.core.advert.{ NewCarAdvert, UsedCarAdvert }
 import com.scout24.common.utils.CirceCodec
 import scala.concurrent.ExecutionContext
 import com.scout24.cardvert.core.advert.AdvertService
 
 class AdvertRoute(service: AdvertService)
-                 (implicit system: ActorSystem, _mat: Materializer, _ec: ExecutionContext)
+                 (implicit _ec: ExecutionContext)
     extends AdvertErrorHandler
     with CirceCodec {
 
@@ -36,11 +32,13 @@ class AdvertRoute(service: AdvertService)
             yield all.map(CarAdvert.fromAdvert)
           }
         }
-      }
+      } ~
+        post {
+          complete("OK")
+        }
     }
   }
 
   def notFoundError(id: Int)
     = ErrorToken(s"Advert with id $id not found", NotFoundError)
 }
-
