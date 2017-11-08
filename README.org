@@ -1,0 +1,43 @@
+#+TITLE: Simple Functional Domain Driven Example
+A Scala implementation for creating RESTful apps with functional programming and DDD mindset.
+Its simplicity is ideal for anyone who self-learn scala and DDD.
+
+** Cardvert
+   Application for managing car advertisement. The domain is simple and completely described in one single algebra.
+
+   #+begin_src scala
+
+   trait AdvertsAlg[Advert, Id] {
+     def getAll: Future[Seq[Advert]]
+     def getById(id: Id): Future[Option[Advert]]
+
+     def add(advert: Advert): Future[Unit]
+     def update(advert: Advert): Future[Unit]
+     def delete(id: Id): Future[Unit]
+   }
+
+   #+end_src
+
+** Starting the app
+   Go to the root directory of this project.
+   Execute ~docker-compose up~ to start cardvert server and mysql.
+   Fire up ~sbt~ and use these commands:
+   #+begin_src bash
+   test     # starting unit test
+   it:test  # starting integration test, make sure to fire up 'docker-compose up' first
+   run      # starting cardvert server, not necessary if you fired 'docker-compose up'
+   #+end_src
+
+   After the server is run, we can manually call the endpoints using any http client to port ~8080~, we suggest [[https://httpie.org/][httpie]] for http client.
+
+** Main technology stack
+   1. [[https://akka.io/docs/][akka-http]] for both http client and server
+   2. [[https://circe.github.io/circe/][circe]] for encoding and decoding Json
+   3. [[https://github.com/adamw/macwire][macwire]] for dependency injection
+   4. [[http://slick.lightbend.com/][slick]] for accessing database
+   5. [[http://www.scala-lang.org/][scala]] for language and standard libraries
+   6. [[https://www.docker.com/][docker]] for containerization and server dependencies
+   7. [[https://www.mysql.com/][mysql]] for, well, mysql
+   8. [[http://wiremock.org/][wiremock]] for mock http server
+
+   Unfortunately, no [[https://github.com/scalaz/scalaz][scalaz]] or [[https://typelevel.org/cats/][cats]], all the monads is implemented using plain, simple and happy scala libraries :)

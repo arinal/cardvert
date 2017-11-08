@@ -1,9 +1,8 @@
 package com.scout24.cardvert
 
+import org.joda.time.DateTime
 import com.scout24.cardvert.core.advert._
 import com.scout24.cardvert.infra.repository.inmemory.AdvertInMemoryRepo
-import org.joda.time.DateTime
-import com.scout24.cardvert.core.advert.{NewCarAdvert, UsedCarAdvert}
 
 trait InitRepo {
 
@@ -13,7 +12,7 @@ trait InitRepo {
   val usedKijang = UsedCarAdvert(2, "Used Toyota Kijang", Gasoline, 52000, 889, DateTime.now().minusYears(3))
   val newMaybach = NewCarAdvert (3, "Brand New Maybach",  Gasoline, 660500)
   val mrBeans    = UsedCarAdvert(4, "Mr. Beans' Orange 1969 Mini", Gasoline, 550000, 1000, DateTime.now().minusYears(10))
-  val newPanther = NewCarAdvert (5, "New Isuzu Panther Diesel", Diesel, 6000)
+  val newPanther = NewCarAdvert (5, "New Isuzu Panther Diesel",    Diesel  , 6000)
 
   val allAdverts = Seq(
     newKijang,

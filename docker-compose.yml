@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootp
+    ports:
+      - 3306:3306
+    volumes:
+      - "./scripts/db:/docker-entrypoint-initdb.d"
+
+  cardvert:
+    image: "scout24/cardvert:latest"
+    ports:
+      - 8080:8080

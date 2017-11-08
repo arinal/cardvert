@@ -1,11 +1,15 @@
-lazy val root = (project in file(".")).
-  settings(
-    inThisBuild(List(
+lazy val root = (project in file("."))
+  .configs(IntegrationTest)
+  .settings(
+    Seq(
       organization := "com.scout24",
       scalaVersion := "2.12.3",
+      name         := "cardvert",
       version      := "0.1.0-SNAPSHOT"
-    )),
-    name := "cardvert",
+    ),
+
+    Defaults.itSettings,
+
     libraryDependencies ++= Seq(
       "com.softwaremill.macwire" %% "macros"    % "2.3.0",
 
@@ -17,8 +21,31 @@ lazy val root = (project in file(".")).
 
       "com.typesafe.akka"  %% "akka-http"       % "10.0.10",
 
-      "org.scalatest"     %% "scalatest"         % "3.0.3"   % Test,
-      "com.typesafe.akka" %% "akka-http-testkit" % "10.0.10"
-
+      "org.scalatest"     %% "scalatest"         % "3.0.3"   % "it,test",
+      "com.typesafe.akka" %% "akka-http-testkit" % "10.0.10" % "test"
     )
   )
+
+enablePlugins(DockerPlugin)
+
+dockerfile in docker := {
+  val artifact: File = assembly.value
+  val artifactTargetPath = s"/app/${artifact.name}"
+
+  new Dockerfile {
+    from("java")
+    add(artifact, artifactTargetPath)
+    entryPoint("java", "-jar", artifactTargetPath)
+  }
+}
+
+imageNames in docker := Seq(
+  ImageName(s"scout24/${name.value}:latest"),
+  ImageName(
+    namespace = Some("scout24"),
+    repository = name.value,
+    tag = Some("v" + version.value)
+  )
+)
+
+buildOptions in docker := BuildOptions(cache = false)

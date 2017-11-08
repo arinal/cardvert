@@ -1,4 +1,4 @@
-package com.lamedh.common.akkahttp
+package com.scout24.common.infra.akkahttp
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
