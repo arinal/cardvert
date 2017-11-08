@@ -16,6 +16,9 @@ object ErrorToken {
 
   val empty = ErrorToken("", NoError)
 
+  def inputError(message: String) = ErrorToken(message, InputError)
+  def notFoundError(message: String) = ErrorToken(message, NotFoundError)
+
   def failure(message: String, errorType: ErrorType = UnknownError)
     = Failure(ErrorToken(message, errorType))
 

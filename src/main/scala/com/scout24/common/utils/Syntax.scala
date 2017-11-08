@@ -6,6 +6,18 @@ import scala.util.{Either, Failure, Success, Try}
 
 object Syntax {
 
+  implicit class TrySyntax[M[_], A](m: M[A]) {
+
+    def toTry(ifFail: ErrorToken = ErrorToken.empty): Try[A] = m match {
+      case o: Option[A] => option2Try(o, ifFail)
+    }
+
+    def option2Try(option: Option[A], ifFail: ErrorToken) = option match {
+      case Some(s) => Success(s)
+      case None => Failure(ifFail)
+    }
+  }
+
   implicit class FutureSyntax[M[_], A](m: M[A]) {
 
     def toFuture(ifFail: ErrorToken = ErrorToken.empty): Future[A] = m match {
