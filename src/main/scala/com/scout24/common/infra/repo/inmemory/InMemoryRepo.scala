@@ -5,7 +5,7 @@ import com.scout24.common.core.{Entity, Repository}
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class InMemoryRepo[E <: Entity[Id], Id] extends Repository[E, Id] {
+abstract class InMemoryRepo[E <: Entity[Id], Id] extends Repository[E, Id] {
 
   private lazy val entityMap = mutable.Map[Id, E]()
 

@@ -19,6 +19,11 @@ lazy val root = (project in file("."))
       "io.circe"           %% "circe-parser"    % "0.8.0",
       "ch.qos.logback"     %  "logback-classic" % "1.1.2",
 
+      "mysql"              %  "mysql-connector-java" % "5.1.34",
+      "com.h2database"     %  "h2"                   % "1.4.185",
+      "com.typesafe.slick" %% "slick"                % "3.2.1",
+      "com.typesafe.slick" %% "slick-hikaricp"       % "3.2.1",
+
       "com.typesafe.akka"  %% "akka-http"       % "10.0.10",
 
       "org.scalatest"     %% "scalatest"         % "3.0.3"   % "it,test",

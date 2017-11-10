@@ -36,11 +36,10 @@ object Advert {
 
   import com.scout24.common.core.ErrorToken._
 
-  def validate(advert: Advert): Try[Advert] = {
+  def validate(advert: Advert): Try[Advert] =
     if (advert.id <= 0) failure("Id must greater than 0", InputError)
     else if (advert.price < 0) failure("Price cannot be negative", InputError)
     else Success(advert)
-  }
 
   def newCarAdvert(id: Int, title: String, fuel: Fuel, price: Int): Try[NewCarAdvert] = {
     val advert = NewCarAdvert(id, title, fuel, price)

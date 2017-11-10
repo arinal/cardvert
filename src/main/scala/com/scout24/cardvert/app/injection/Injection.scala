@@ -14,7 +14,9 @@ trait Injection {
   implicit val _ec    = system.dispatcher
   implicit val _mat   = ActorMaterializer()
 
-  lazy val repoModule = new InMemoryRepoModule
+  lazy val repoModule =
+    // new InMemoryRepoModule
+    new H2RepoModule
   import repoModule._
 
   lazy val service    : AdvertService = wire[AdvertService]
