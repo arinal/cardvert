@@ -7,19 +7,29 @@ import com.scout24.cardvert.core.advert._
 import com.scout24.cardvert.infra.repository.inmemory.AdvertInMemoryRepo
 import com.scout24.cardvert.infra.repository.slick.AdvertSlickRepo
 
+class MySqlRepoModule {
+
+  trait Slick extends SlickProfile {
+    override lazy val profile = slick.jdbc.MySQLProfile
+    import slick.jdbc.MySQLProfile.api._
+    override lazy val db = Database.forConfig("db-cardvert-mysql")
+  }
+
+  lazy val advertRepo = new AdvertSlickRepo with Slick
+}
+
 class H2RepoModule {
 
   trait Slick extends SlickProfile {
     override lazy val profile = slick.jdbc.H2Profile
     import slick.jdbc.H2Profile.api._
-    override lazy val db = Database.forConfig("db-moveon-h2")
+    override lazy val db = Database.forConfig("db-cardvert-h2")
   }
 
   lazy val advertRepo = new AdvertSlickRepo with Slick
 
-  advertRepo.mkTable()
-
   def init() = {
+    advertRepo.mkTable()
     val now = DateTime.now()
     Seq(NewCarAdvert (1, "New Toyota Kijang",  Gasoline, 92000),
         UsedCarAdvert(2, "Used Toyota Kijang", Gasoline, 52000, 889, now.minusYears(3)),

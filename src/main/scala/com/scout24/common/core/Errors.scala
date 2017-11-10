@@ -25,6 +25,8 @@ object ErrorToken {
   def left(message: String, errorType: ErrorType = UnknownError)
     = Left(ErrorToken(message, errorType))
 
-  def future(message: String, errorType: ErrorType = UnknownError)
-    = Future.failed(ErrorToken(message, errorType))
+  def future(error: ErrorToken) = Future.failed(error)
+
+  def future(message: String, errorType: ErrorType = UnknownError): Future[ErrorToken]
+    = future(ErrorToken(message, errorType))
 }

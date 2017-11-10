@@ -14,10 +14,8 @@ trait AdvertSlickRepo extends AdvertRepository
 
   import profile.api._
 
-  override def count: Future[Int]       = db.run(AdvertQuery.countAct)
-  override def all: Future[Seq[Advert]] =
-    db.run(AdvertQuery.allAct)
-      .map(_.map(toDomain))
+  override def count: Future[Int]         = db.run(AdvertQuery.countAct)
+  override def all  : Future[Seq[Advert]] = db.run(AdvertQuery.allAct).map(_.map(toDomain))
 
   override def byId(id: Int): Future[Option[Advert]] =
     db.run(AdvertQuery.findAct(id))
@@ -26,6 +24,9 @@ trait AdvertSlickRepo extends AdvertRepository
       .recover {
         case _: NoSuchElementException => None
       }
+
+  override def update(entity: Advert): Future[Unit] = ???
+  override def delete(id: Int)   : Future[Unit] = ???
 
   override def insert(advert: Advert): Future[Unit] =
     db.run(AdvertQuery += fromDomain(advert))
@@ -37,9 +38,6 @@ trait AdvertSlickRepo extends AdvertRepository
         case _: MySQLIntegrityConstraintViolationException =>
           Future.failed(alreadyExistsError(advert))
       }
-
-  override def update(entity: Advert): Future[Unit] = ???
-  override def delete(id: Int)   : Future[Unit] = ???
 
   def mkTable() = db.run(AdvertQuery.schema.create)
 
