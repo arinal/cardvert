@@ -18,16 +18,6 @@ object AdvertModel {
   import com.scout24.common.utils.Syntax._
   import com.scout24.common.core.ErrorToken._
 
-  def toString(fuel: Fuel) = fuel match {
-    case Gasoline => "Gasoline"
-    case Diesel   => "Diesel"
-  }
-
-  def toFuel(fuel: String) = fuel match {
-    case "Gasoline" => Gasoline
-    case "Diesel"   => Diesel
-  }
-
   def toDomain(model: AdvertModel) = {
     import model._
     for (valid <- validate(model))
@@ -46,12 +36,20 @@ object AdvertModel {
     } yield model
   }
 
-  def fromDomain(advert: Advert) = {
-    advert match {
-      case NewCarAdvert(id, title, fuel, price) =>
-        AdvertModel(id, title, toString(fuel), price, true, None, None)
-      case UsedCarAdvert(id, title, fuel, price, mil, reg) =>
-        AdvertModel(id, title, toString(fuel), price, false, Some(mil), Some(reg))
-    }
+  def fromDomain(advert: Advert) = advert match {
+    case NewCarAdvert(id, title, fuel, price) =>
+      AdvertModel(id, title, toString(fuel), price, true, None, None)
+    case UsedCarAdvert(id, title, fuel, price, mil, reg) =>
+      AdvertModel(id, title, toString(fuel), price, false, Some(mil), Some(reg))
+  }
+
+  def toString(fuel: Fuel) = fuel match {
+    case Gasoline => "Gasoline"
+    case Diesel   => "Diesel"
+  }
+
+  def toFuel(fuel: String) = fuel match {
+    case "Gasoline" => Gasoline
+    case "Diesel"   => Diesel
   }
 }

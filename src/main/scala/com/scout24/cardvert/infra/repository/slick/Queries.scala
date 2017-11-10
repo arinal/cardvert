@@ -12,8 +12,8 @@ trait Queries extends SlickProfile {
                       fuel: Int,
                       price: Int,
                       isNew: Boolean,
-                      mileage: Int,
-                      registration: Date) {
+                      mileage: Option[Int],
+                      registration: Option[Date]) {
 
   }
 
@@ -23,8 +23,8 @@ trait Queries extends SlickProfile {
     def fuel         = column[Int]("fuel")
     def price        = column[Int]("price")
     def isNew        = column[Boolean]("is_new")
-    def mileage      = column[Int]("mileage")
-    def registration = column[Date]("registration")
+    def mileage      = column[Option[Int]]("mileage")
+    def registration = column[Option[Date]]("registration")
 
     def * = (id, title, fuel, price, isNew, mileage, registration).mapTo[AdvertDb]
   }

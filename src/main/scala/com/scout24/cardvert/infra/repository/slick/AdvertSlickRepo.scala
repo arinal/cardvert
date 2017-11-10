@@ -1,5 +1,7 @@
 package com.scout24.cardvert.infra.repository.slick
 
+import com.scout24.cardvert.core.advert.Fuel
+import org.joda.time.DateTime
 import scala.concurrent.Future
 import java.sql.Date
 import org.h2.jdbc.JdbcSQLException
@@ -25,7 +27,10 @@ trait AdvertSlickRepo extends AdvertRepository
         case _: NoSuchElementException => None
       }
 
-  override def update(entity: Advert): Future[Unit] = ???
+  override def update(advert: Advert): Future[Unit] = db.run {
+    AdvertQuery.updateAct(fromDomain(advert))
+  }.map(_ => ())
+
   override def delete(id: Int)   : Future[Unit] = ???
 
   override def insert(advert: Advert): Future[Unit] =
@@ -44,11 +49,19 @@ trait AdvertSlickRepo extends AdvertRepository
   private def toDomain(advertDb: AdvertDb) = {
     import advertDb._
     if (isNew) NewCarAdvert(id, title, toFuel(fuel), price)
-    else UsedCarAdvert(id, title, toFuel(fuel), price, mileage, toDateTime(registration))
+    else UsedCarAdvert(id, title, toFuel(fuel), price, mileage.get, toDateTime(registration.get))
   }
 
-  private def fromDomain(advert: Advert): AdvertDb = {
-    ???
+  private def fromDomain(advert: Advert): AdvertDb = advert match {
+    case NewCarAdvert(id, title, fuel, price) =>
+      AdvertDb(id, title, toFuelDb(fuel), price, true, None, None)
+    case UsedCarAdvert(id, title, fuel, price, mil, reg) =>
+      AdvertDb(id, title, toFuelDb(fuel), price, false, Some(mil), Some(toSqlDate(reg)))
+  }
+
+  private def toFuelDb(fuel: Fuel) = fuel match {
+    case Gasoline => 1
+    case Diesel   => 2
   }
 
   private def toFuel(fuel: Int) = fuel match {
@@ -56,5 +69,6 @@ trait AdvertSlickRepo extends AdvertRepository
     case 2 => Diesel
   }
 
-  private def toDateTime(date: Date) = ???
+  private def toDateTime(date: Date) = DateTime.parse(date.toString)
+  private def toSqlDate(date: DateTime) = Date.valueOf(date.toString("yyyy-mm-dd"))
 }

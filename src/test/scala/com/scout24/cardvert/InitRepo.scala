@@ -6,7 +6,7 @@ import com.scout24.cardvert.infra.repository.inmemory.AdvertInMemoryRepo
 
 trait InitRepo {
 
-  lazy val advertRepo = new AdvertInMemoryRepo
+  lazy val advertRepo: AdvertRepository = new AdvertInMemoryRepo
 
   val newKijang  = NewCarAdvert (1, "New Toyota Kijang",  Gasoline, 92000)
   val usedKijang = UsedCarAdvert(2, "Used Toyota Kijang", Gasoline, 52000, 889, DateTime.now().minusYears(3))

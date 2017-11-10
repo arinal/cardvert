@@ -27,16 +27,15 @@ class CardvertIntegTest extends AsyncFlatSpec
   "Doing CRUD in happy path manner" should
   "behave accordingly" in {
 
-    val result = for {
+    for {
       newKijang  <- httpCallAndDecode[AdvertModel](s"$baseUrl?id=1")
       usedKijang <- httpCallAndDecode[AdvertModel](s"$baseUrl?id=2")
       all        <- httpCallAndDecode[Seq[AdvertModel]](s"$baseUrl")
     } yield (newKijang, usedKijang, all)
-
-    result.map { case (nk, uk, all) =>
-      nk.title shouldBe "New Toyota Kijang"
-      uk.title shouldBe "Used Toyota Kijang"
-      all.length shouldBe 5
-    }
+      .map { case (nk, uk, all) =>
+        nk.title   shouldBe "New Toyota Kijang"
+        uk.title   shouldBe "Used Toyota Kijang"
+        all.length shouldBe 5
+      }
   }
 }

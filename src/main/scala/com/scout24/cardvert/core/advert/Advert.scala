@@ -48,7 +48,7 @@ object Advert {
 
   def usedCarAdvert(id: Int, title: String, fuel: Fuel, price: Int, mileage: Int, registration: DateTime)
   : Try[UsedCarAdvert] = {
-    val advert = UsedCarAdvert(id, title, fuel, price, mileage, registration)
+    val advert = UsedCarAdvert(id, title, fuel, price, mileage, registration.withTimeAtStartOfDay)
     validate(advert) flatMap { _ =>
       if (mileage < 0) failure("Mileage cannot be negative", InputError)
       else if (registration isAfterNow) failure("Registration cannot be in the future")
