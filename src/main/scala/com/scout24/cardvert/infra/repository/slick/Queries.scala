@@ -17,7 +17,7 @@ trait Queries extends SlickProfile {
 
   }
 
-  class AdvertTable(tag: Tag) extends Table[AdvertDb](tag, "Advert") {
+  class AdvertTable(tag: Tag) extends Table[AdvertDb](tag, "Adverts") {
     def id           = column[Int]("id", O.PrimaryKey)
     def title        = column[String]("title")
     def fuel         = column[Int]("fuel")

@@ -13,5 +13,7 @@ services:
 
   cardvert:
     image: "scout24/cardvert:latest"
+    environment:
+      - CARDVERT_DB_HOST=mysql
     ports:
       - 8080:8080

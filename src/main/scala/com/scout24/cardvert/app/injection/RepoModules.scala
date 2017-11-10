@@ -12,10 +12,12 @@ class MySqlRepoModule {
   trait Slick extends SlickProfile {
     override lazy val profile = slick.jdbc.MySQLProfile
     import slick.jdbc.MySQLProfile.api._
-    override lazy val db = Database.forConfig("db-cardvert-mysql")
+    override lazy val db = Database.forConfig("db.mysql")
   }
 
   lazy val advertRepo = new AdvertSlickRepo with Slick
+
+  def init() = {}
 }
 
 class H2RepoModule {
@@ -23,7 +25,7 @@ class H2RepoModule {
   trait Slick extends SlickProfile {
     override lazy val profile = slick.jdbc.H2Profile
     import slick.jdbc.H2Profile.api._
-    override lazy val db = Database.forConfig("db-cardvert-h2")
+    override lazy val db = Database.forConfig("db.h2")
   }
 
   lazy val advertRepo = new AdvertSlickRepo with Slick

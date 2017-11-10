@@ -4,6 +4,8 @@ import com.scout24.common.core.ErrorToken
 import scala.concurrent.Future
 import scala.util.{Either, Failure, Success, Try}
 
+import scala.language.higherKinds
+
 object Syntax {
 
   implicit class TrySyntax[M[_], A](m: M[A]) {
