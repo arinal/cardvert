@@ -26,4 +26,4 @@ INSERT INTO Adverts (id, title, fuel, price, is_new, mileage, registration)
 VALUES (4, 'Mr. Beans'' Orange 1969 Mini', 1, 550000, 0, 1000, '2005-5-5');
 
 INSERT INTO Adverts (id, title, fuel, price, is_new, mileage, registration)
-VALUES (5, 'New Isuzu Panther Diesel', 0, 6000, 1, null, null);
+VALUES (5, 'New Isuzu Panther Diesel', 2, 6000, 1, null, null);

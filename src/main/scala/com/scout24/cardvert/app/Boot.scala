@@ -1,16 +1,12 @@
 package com.scout24.cardvert.app
 
+import akka.http.scaladsl.server.HttpApp
 import com.scout24.cardvert.app.injection.Injection
 
-object Boot extends App
+object Boot extends HttpApp
+    with App
     with Injection {
 
   injectionInit()
-
-  val binding = restServer.start()
-
-  scala.sys.addShutdownHook {
-    restServer.stop(binding)
-    println("Server stopped...")
-  }
+  startServer(config.httpHost, config.httpPort)
 }

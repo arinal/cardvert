@@ -1,21 +1,21 @@
 package com.scout24.cardvert.infra.repository.slick
 
-import java.sql.Date
 import com.scout24.common.infra.repo.slick.SlickProfile
+import org.joda.time.DateTime
+
+case class AdvertDb(id: Int,
+                    title: String,
+                    fuel: Int,
+                    price: Int,
+                    isNew: Boolean,
+                    mileage: Option[Int],
+                    registration: Option[DateTime])
 
 trait Queries extends SlickProfile {
 
   import profile.api._
-
-  case class AdvertDb(id: Int,
-                      title: String,
-                      fuel: Int,
-                      price: Int,
-                      isNew: Boolean,
-                      mileage: Option[Int],
-                      registration: Option[Date]) {
-
-  }
+  object JodaSupport extends com.github.tototoshi.slick.GenericJodaSupport(profile)
+  import JodaSupport._
 
   class AdvertTable(tag: Tag) extends Table[AdvertDb](tag, "Adverts") {
     def id           = column[Int]("id", O.PrimaryKey)
@@ -24,7 +24,7 @@ trait Queries extends SlickProfile {
     def price        = column[Int]("price")
     def isNew        = column[Boolean]("is_new")
     def mileage      = column[Option[Int]]("mileage")
-    def registration = column[Option[Date]]("registration")
+    def registration = column[Option[DateTime]]("registration")
 
     def * = (id, title, fuel, price, isNew, mileage, registration).mapTo[AdvertDb]
   }

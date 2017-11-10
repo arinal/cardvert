@@ -1,19 +1,19 @@
 package com.scout24.common.infra.akkahttp
 
+import scala.collection.immutable.Seq
+import scala.concurrent.{ExecutionContext, Future}
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.OutgoingConnection
 import akka.http.scaladsl.coding.Gzip
-import akka.http.scaladsl.model.headers.HttpEncodings
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers.HttpEncodings
 import akka.stream.Materializer
 import akka.stream.scaladsl.Flow
 import akka.util.ByteString
 import io.circe.Decoder
 import io.circe.parser.decode
-
-import scala.collection.immutable.Seq
-import scala.concurrent.{ExecutionContext, Future}
 
 object AkkaHttpClient {
   case class ResponseError(response: HttpResponse) extends Throwable

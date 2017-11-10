@@ -1,13 +1,11 @@
 package com.scout24.cardvert.app
 
-import com.scout24.cardvert.app
-
-import org.scalatest.{AsyncFlatSpec, Matchers}
 import akka.actor.ActorSystem
 import akka.stream.{ActorMaterializer, Materializer}
-import com.scout24.common.utils.CirceCodec
+import com.scout24.cardvert.app
 import com.scout24.common.infra.akkahttp.AkkaHttpClient
-import com.scout24.cardvert.core.advert._
+import com.scout24.common.utils.CirceCodec
+import org.scalatest.{AsyncFlatSpec, Matchers}
 
 class CardvertIntegTest extends AsyncFlatSpec
     with Matchers
@@ -26,12 +24,11 @@ class CardvertIntegTest extends AsyncFlatSpec
 
   "Doing CRUD in happy path manner" should
   "behave accordingly" in {
-
-    for {
+    (for {
       newKijang  <- httpCallAndDecode[AdvertModel](s"$baseUrl?id=1")
       usedKijang <- httpCallAndDecode[AdvertModel](s"$baseUrl?id=2")
       all        <- httpCallAndDecode[Seq[AdvertModel]](s"$baseUrl")
-    } yield (newKijang, usedKijang, all)
+    } yield (newKijang, usedKijang, all))
       .map { case (nk, uk, all) =>
         nk.title   shouldBe "New Toyota Kijang"
         uk.title   shouldBe "Used Toyota Kijang"

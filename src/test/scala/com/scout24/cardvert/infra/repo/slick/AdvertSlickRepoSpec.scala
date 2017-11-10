@@ -31,7 +31,7 @@ class AdvertSlickRepoSpec extends AsyncFlatSpec
       .map(_ shouldEqual Some(newPanther))
   }
 
-  "updating Sound of Music to Sound of Satan" should
+  "updating 'Toyota Kijang' to Toyota Jangkrik'" should
   "changed the title" in {
     val changed = usedKijang.copy(title = "Used Toyota Jangkrik")
     advertRepo.update(changed)
@@ -39,10 +39,10 @@ class AdvertSlickRepoSpec extends AsyncFlatSpec
       .map(_ shouldEqual Some(changed))
   }
 
-  // "inserting Sound of Music again" should
-  // "return already exists error" in {
-  //   recoverToSucceededIf[ErrorToken] {
-  //     advertRepo.insert(usedKijang)
-  //   }
-  // }
+  "inserting existing advertisement" should
+  "return already exists error" in {
+    recoverToSucceededIf[ErrorToken] {
+      advertRepo.insert(usedKijang)
+    }
+  }
 }
